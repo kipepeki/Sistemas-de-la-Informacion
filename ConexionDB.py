@@ -20,6 +20,7 @@ cur.execute('''CREATE TABLE IF NOT EXISTS responsables (
                         rol TEXT
 )''')
 cur.execute('''CREATE TABLE IF NOT EXISTS analisis (
+                        ip TEXT,
                         puertos_abiertos TEXT,
                         n_puertos_abiertos INTEGER,
                         servicios INTEGER,
@@ -45,7 +46,7 @@ for dispositivo in dispositivos:
         n_puertos_abiertos = 0
     else:
         n_puertos_abiertos = len(analisis["puertos_abiertos"])
-    cur.execute("INSERT INTO analisis (puertos_abiertos, n_puertos_abiertos, servicios, servicios_inseguros, vulnerabilidades_detectadas) VALUES (?, ?, ?, ?, ?)", (json.dumps(analisis['puertos_abiertos']), n_puertos_abiertos, analisis['servicios'], analisis['servicios_inseguros'], analisis['vulnerabilidades_detectadas']))
+    cur.execute("INSERT INTO analisis (ip, puertos_abiertos, n_puertos_abiertos, servicios, servicios_inseguros, vulnerabilidades_detectadas) VALUES (?, ?, ?, ?, ?, ?)", (dispositivo['ip'], json.dumps(analisis['puertos_abiertos']), n_puertos_abiertos, analisis['servicios'], analisis['servicios_inseguros'], analisis['vulnerabilidades_detectadas']))
     cur.execute("INSERT INTO dispositivos (id, ip, localizacion, responsable, analisis) VALUES (?, ?, ?, ?, ?)", (dispositivo['id'], dispositivo['ip'], dispositivo['localizacion'], responsable['nombre'], analisis_id))
     analisis_id += 1
 

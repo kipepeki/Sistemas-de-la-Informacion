@@ -21,6 +21,25 @@ plt.ylabel('Numero alertas')
 plt.title('Alertas en el tiempo')
 plt.show()
 
+dispositivos = pd.read_sql_query("SELECT * FROM dispositivos", con)
+alertas = pd.read_sql_query("SELECT * FROM alertas", con)
+analisis = pd.read_sql_query("SELECT * FROM analisis", con)
+merge = pd.merge(dispositivos, analisis, on='ip')
+
+merge = pd.merge(dispositivos, analisis, on='ip')
+vuln = analisis[['servicios_inseguros', 'vulnerabilidades_detectadas']]
+vuln['suma_vuln'] = vuln['servicios_inseguros'] + vuln['vulnerabilidades_detectadas']
+vuln_dispositivo = pd.concat([merge['ip'], vuln['suma_vuln']], axis=1)
+vuln_dispositivo_agrupado = vuln_dispositivo.groupby('ip').sum().reset_index()
+vuln_dispositivo_ordenado = vuln_dispositivo_agrupado.sort_values(by='suma_vuln', ascending=False)
+top_10 = vuln_dispositivo_ordenado.head(10)
+top_10 = top_10[['ip', 'suma_vuln']]
+plt.bar(top_10['ip'], top_10['suma_vuln'])
+plt.xlabel('IP dispositivo')
+plt.ylabel('Vulnerabilidades')
+plt.title('Top 10 Dispositivos vulnerables')
+plt.show()
+
 n_alertas = alertas.groupby('clasificacion').size().reset_index(name='count')
 plt.bar(n_alertas['clasificacion'], n_alertas['count'])
 plt.xlabel('Categoría')
