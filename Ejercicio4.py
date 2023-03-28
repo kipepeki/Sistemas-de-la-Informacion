@@ -47,3 +47,8 @@ plt.ylabel('Numero de alertas')
 plt.title('Alertas por categoría')
 plt.xticks(rotation=90)
 plt.show()
+
+media_puertos_abiertos_vs_servicios_inseguros = merge['n_puertos_abiertos'].mean() / merge['servicios_inseguros'].mean()
+media_puertos_abiertos_vs_servicios_detectados = merge['n_puertos_abiertos'].mean() / merge['servicios'].mean()
+print('Media de puertos abiertos frente a servicios inseguros:', media_puertos_abiertos_vs_servicios_inseguros)
+print('Media de puertos abiertos frente al total de servicios detectados:', media_puertos_abiertos_vs_servicios_detectados)
