@@ -30,11 +30,11 @@ cur.execute('''CREATE TABLE IF NOT EXISTS analisis (
 )''')
 
 ## Creamos tabla ALERTAS con el propio pandas ya que el formato de los datos permiten crearla directamente (primera fila del .csv)
-alertas = pd.read_csv("./data/alerts.csv")
+alertas = pd.read_csv("../data/alerts.csv")
 alertas.to_sql("alertas", con, if_exists="replace", index=False)
 
 ## Cogemos los datos de devices.json
-with open("./data/devices.json", "r") as file:
+with open("../data/devices.json", "r") as file:
     dispositivos = json.load(file)
 
 ## Insertamos los datos en las tablas (en la tabla ALERTAS ya tenemos los datos introducidos)
